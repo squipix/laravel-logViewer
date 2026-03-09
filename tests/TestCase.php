@@ -85,6 +85,8 @@ abstract class TestCase extends BaseTestCase
         $config = $app['config'];
 
         $config->set('log-viewer.storage-path', $app['path.storage'].DIRECTORY_SEPARATOR.'logs');
+        $config->set('app.key', 'base64:10uns3fbP94yjWgtTRLuduM1p6pblhF7AJYeZsQ19+g=');
+        $config->set('log-viewer.route.attributes.middleware', ['web']);
     }
 
     /* -----------------------------------------------------------------

@@ -60,10 +60,30 @@ class PublishCommand extends Command
             $args['--force'] = true;
         }
 
-        $args['--tag'] = [$this->option('tag')];
+        $tag = trim((string) $this->option('tag'));
+
+        if ($tag !== '') {
+            $tags = array_values(array_filter(array_map('trim', explode(',', $tag))));
+
+            if (count($tags) === 1) {
+                $args['--tag'] = $tags[0];
+            } else if (! empty($tags)) {
+                $args['--tag'] = $tags;
+            }
+        }
 
         $this->displayLogViewer();
-        $this->call('vendor:publish', $args);
+
+        if ($tag === '') {
+            foreach (['config', 'translations', 'views'] as $publishTag) {
+                $taggedArgs = $args;
+                $taggedArgs['--tag'] = $publishTag;
+
+                $this->call('vendor:publish', $taggedArgs);
+            }
+        } else {
+            $this->call('vendor:publish', $args);
+        }
 
         return static::SUCCESS;
     }

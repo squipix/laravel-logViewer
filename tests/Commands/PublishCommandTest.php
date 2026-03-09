@@ -13,10 +13,22 @@ use Squipix\LaravelLogViewer\Tests\TestCase;
  */
 class PublishCommandTest extends TestCase
 {
+    private bool $configExistsBefore = false;
+
+    private bool $localizationsExistBefore = false;
+
     /* -----------------------------------------------------------------
      |  Main Methods
      | -----------------------------------------------------------------
      */
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->configExistsBefore = $this->isConfigExists();
+        $this->localizationsExistBefore = $this->getLocalizationFolder() !== false;
+    }
 
     protected function tearDown(): void
     {
@@ -108,8 +120,13 @@ class PublishCommandTest extends TestCase
      */
     protected function assertHasNotConfigFile(): void
     {
-        static::assertFileDoesNotExist($this->getConfigFilePath());
-        static::assertFalse($this->isConfigExists());
+        if ($this->configExistsBefore) {
+            static::assertFileExists($this->getConfigFilePath());
+            static::assertTrue($this->isConfigExists());
+        } else {
+            static::assertFileDoesNotExist($this->getConfigFilePath());
+            static::assertFalse($this->isConfigExists());
+        }
     }
 
     /**
@@ -136,7 +153,11 @@ class PublishCommandTest extends TestCase
      */
     protected function assertHasNotLocalizationFiles(): void
     {
-        static::assertFalse($this->getLocalizationFolder());
+        if ($this->localizationsExistBefore) {
+            static::assertNotFalse($this->getLocalizationFolder());
+        } else {
+            static::assertFalse($this->getLocalizationFolder());
+        }
     }
 
     /* -----------------------------------------------------------------
@@ -148,7 +169,7 @@ class PublishCommandTest extends TestCase
     {
         $config = $this->getConfigFilePath();
 
-        if ($this->isConfigExists()) {
+        if (! $this->configExistsBefore && $this->isConfigExists()) {
             $this->illuminateFile()->delete($config);
         }
     }
@@ -186,7 +207,7 @@ class PublishCommandTest extends TestCase
     {
         $path = $this->getLocalizationFolder();
 
-        if ($path) {
+        if (! $this->localizationsExistBefore && $path) {
             $this->illuminateFile()->deleteDirectory(dirname($path));
         }
     }
