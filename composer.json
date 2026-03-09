@@ -1,0 +1,75 @@
+{
+    "name": "squipix/laravel-log-viewer",
+    "description": "Provides a Log Viewer for Laravel",
+    "keywords": [
+        "squipix",
+        "laravel",
+        "log",
+        "log viewer",
+        "log-viewer",
+        "logviewer"
+    ],
+    "homepage": "https://github.com/squipix/LogViewer",
+    "authors": [
+        {
+            "name": "Squipix",
+            "email": "info@squipix.com",
+            "homepage": "https://github.com/squipix",
+            "role": "Developer"
+        },
+        {
+            "name": "ARCANEDEV",
+            "email": "info@squipix.com",
+            "homepage": "https://github.com/arcanedev-maroc",
+            "role": "Developer"
+        }
+    ],
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.2",
+        "ext-json": "*",
+        "squipix/support": "^1.0",
+        "psr/log": "^1.0|^2.0|^3.0"
+    },
+    "require-dev": {
+        "laravel/framework": "^9.0|^10.0|^11.0|^12.0",
+        "mockery/mockery": "^1.6",
+        "orchestra/testbench": "^7.0|^8.0|^9.0|^10.0",
+        "phpunit/phpunit": "^9.6|^10.5|^11.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Squipix\\LaravelLogViewer\\": "src/"
+        },
+        "files": [
+            "helpers.php"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Squipix\\LaravelLogViewer\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit --colors=always",
+        "test:dox": "phpunit --testdox --colors=always",
+        "test:cov": "phpunit --coverage-html build/coverage"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-develop": "11.x-dev"
+        },
+        "laravel": {
+            "providers": [
+                "Squipix\\LaravelLogViewer\\LogViewerServiceProvider",
+                "Squipix\\LaravelLogViewer\\Providers\\DeferredServicesProvider"
+            ]
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
