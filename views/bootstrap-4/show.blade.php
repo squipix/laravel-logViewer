@@ -54,7 +54,7 @@
                         <tbody>
                             <tr>
                                 <td>@lang('File path') :</td>
-                                <td colspan="7">{{ $log->getPath() }}</td>
+                                <td colspan="7">{{ basename($log->getPath()) }}</td>
                             </tr>
                             <tr>
                                 <td>@lang('Log entries') :</td>

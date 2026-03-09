@@ -54,7 +54,7 @@
                         <tbody>
                             <tr>
                                 <td>@lang('File path') :</td>
-                                <td colspan="7">{{ $log->getPath() }}</td>
+                                <td colspan="7">{{ basename($log->getPath()) }}</td>
                             </tr>
                             <tr>
                                 <td>@lang('Log entries') :</td>
@@ -229,7 +229,8 @@
                     method: 'DELETE',
                     headers: {
                         "X-Requested-With": "XMLHttpRequest",
-                        'Content-type': 'application/json'
+                        'Content-type': 'application/json',
+                        'X-CSRF-TOKEN': event.currentTarget.querySelector('input[name="_token"]').value
                     },
                     body: JSON.stringify({
                         date: event.currentTarget.querySelector("input[name='date']").value,

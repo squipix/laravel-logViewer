@@ -232,10 +232,15 @@ class Filesystem implements FilesystemContract
      */
     public function read($date)
     {
+        $path = $this->getLogPath($date);
+        $maxSize = config('log-viewer.max-file-size', 52428800); // Default 50MB
+
+        if ($this->filesystem->size($path) > $maxSize) {
+            throw new FilesystemException("The log file is too large to be processed (exceeds ".($maxSize / 1048576)."MB).");
+        }
+
         try {
-            $log = $this->filesystem->get(
-                $this->getLogPath($date)
-            );
+            $log = $this->filesystem->get($path);
         }
         catch (Exception $e) {
             throw new FilesystemException($e->getMessage());
@@ -257,7 +262,9 @@ class Filesystem implements FilesystemContract
     {
         $path = $this->getLogPath($date);
 
-        throw_unless($this->filesystem->delete($path), FilesystemException::cannotDeleteLog());
+        if ( ! $this->filesystem->delete($path)) {
+            throw FilesystemException::cannotDeleteLog();
+        }
 
         return true;
     }
@@ -316,6 +323,10 @@ class Filesystem implements FilesystemContract
      */
     private function getLogPath(string $date)
     {
+        if ( ! preg_match('/^'.LogParser::REGEX_DATE_PATTERN.'$/', $date)) {
+            throw FilesystemException::invalidPath($date);
+        }
+
         $path = $this->storagePath.DIRECTORY_SEPARATOR.$this->prefixPattern.$date.$this->extension;
 
         if ( ! $this->filesystem->exists($path)) {

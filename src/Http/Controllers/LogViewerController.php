@@ -193,6 +193,13 @@ class LogViewerController extends Controller
 
         $date = $request->input('date');
 
+        if ( ! preg_match('/^\d{4}-\d{2}-\d{2}$/', (string) $date)) {
+            return response()->json([
+                'result' => 'error',
+                'message' => 'Invalid date format'
+            ], 422);
+        }
+
         return response()->json([
             'result' => $this->logViewer->delete($date) ? 'success' : 'error'
         ]);

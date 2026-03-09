@@ -56,7 +56,7 @@ return [
         'attributes' => [
             'prefix'     => 'log-viewer',
 
-            'middleware' => env('ARCANEDEV_LOGVIEWER_MIDDLEWARE') ? explode(',', env('ARCANEDEV_LOGVIEWER_MIDDLEWARE')) : null,
+            'middleware' => env('SQUIPIX_LOGVIEWER_MIDDLEWARE') ? explode(',', env('SQUIPIX_LOGVIEWER_MIDDLEWARE')) : ['web', 'auth'],
         ],
 
         'show' => 'log-viewer::logs.show',
@@ -142,5 +142,12 @@ return [
         '^#\d+',
         '^Stack trace:',
     ],
+
+    /* -----------------------------------------------------------------
+     |  Max File Size (in bytes)
+     | -----------------------------------------------------------------
+     */
+
+    'max-file-size' => 52428800, // 50MB
 
 ];

@@ -48,7 +48,7 @@ class LogViewerRoute extends RouteRegistrar
             $this->delete('delete', [LogViewerController::class, 'delete'])
                  ->name('delete'); // log-viewer::logs.delete
 
-            $this->prefix('{date}')->group(function() {
+            $this->prefix('{date}')->where(['date' => '\d{4}-\d{2}-\d{2}'])->group(function() {
                 $this->get('/', [LogViewerController::class, 'show'])
                      ->name('show'); // log-viewer::logs.show
 

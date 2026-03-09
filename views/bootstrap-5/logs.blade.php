@@ -12,15 +12,15 @@
             <thead>
                 <tr>
                     @foreach($headers as $key => $header)
-                    <th scope="col" class="{{ $key == 'date' ? 'text-left' : 'text-center' }}">
-                        @if ($key == 'date')
-                            <span class="badge text-bg-info">{{ $header }}</span>
-                        @else
-                            <span class="badge badge-level-{{ $key }}">
-                                {{ log_styler()->icon($key) }} {{ $header }}
-                            </span>
-                        @endif
-                    </th>
+                        <th scope="col" class="{{ $key == 'date' ? 'text-left' : 'text-center' }}">
+                            @if ($key == 'date')
+                                <span class="badge text-bg-info">{{ $header }}</span>
+                            @else
+                                <span class="badge badge-level-{{ $key }}">
+                                    {{ log_styler()->icon($key) }} {{ $header }}
+                                </span>
+                            @endif
+                        </th>
                     @endforeach
                     <th scope="col" class="text-end">@lang('Actions')</th>
                 </tr>
@@ -85,7 +85,8 @@
                     </div>
                     <div class="modal-footer justify-content-between">
                         <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">@lang('Cancel')</button>
-                        <button type="submit" class="btn btn-sm btn-danger" data-loading-text="@lang('Loading')&hellip;">@lang('Delete')</button>
+                        <button type="submit" class="btn btn-sm btn-danger"
+                            data-loading-text="@lang('Loading')&hellip;">@lang('Delete')</button>
                     </div>
                 </div>
             </form>
@@ -109,7 +110,7 @@
                     let message = "{{ __('Are you sure you want to delete this log file: :date ?') }}"
 
                     deleteLogForm.querySelector('input[name=date]').value = date
-                    deleteLogModalElt.querySelector('.modal-body p').innerHTML = message.replace(':date', date)
+                    deleteLogModalElt.querySelector('.modal-body p').textContent = message.replace(':date', date)
 
                     deleteLogModal.show()
                 })
@@ -123,7 +124,8 @@
                     method: 'DELETE',
                     headers: {
                         "X-Requested-With": "XMLHttpRequest",
-                        'Content-type': 'application/json'
+                        'Content-type': 'application/json',
+                        'X-CSRF-TOKEN': event.currentTarget.querySelector('input[name="_token"]').value
                     },
                     body: JSON.stringify({
                         date: event.currentTarget.querySelector("input[name='date']").value,
