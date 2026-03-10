@@ -30,7 +30,7 @@ class StatsTable extends AbstractTable
      */
     public static function make(array $data, LogLevelsContract $levels, $locale = null)
     {
-        return new static($data, $levels, $locale);
+        return new self($data, $levels, $locale);
     }
 
     /* -----------------------------------------------------------------

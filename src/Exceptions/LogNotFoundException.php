@@ -20,6 +20,6 @@ class LogNotFoundException extends LogViewerException
      */
     public static function make(string $date)
     {
-        return new static("Log not found in this date [{$date}]");
+        return new self("Log not found in this date [{$date}]");
     }
 }

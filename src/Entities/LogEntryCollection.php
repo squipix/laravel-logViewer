@@ -29,7 +29,7 @@ class LogEntryCollection extends LazyCollection
      */
     public static function load($raw)
     {
-        return new static(function () use ($raw) {
+        return new self(function () use ($raw) {
             foreach (LogParser::parse($raw) as $entry) {
                 list($level, $header, $stack) = array_values($entry);
 
